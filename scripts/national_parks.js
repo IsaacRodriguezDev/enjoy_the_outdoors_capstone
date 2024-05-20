@@ -1,14 +1,20 @@
 "use strict";
 
 window.onload = () => {
-  // when page loads hide the table header
-  document.querySelector("#tableContent").style.display = "none";
+  // when page loads hide the table header, locationDropdown, and parkTypeDropdown
+document.querySelector("#tableContent").style.display = "none";
+document.querySelector('#parkLocationDropdown').style.display = "none";
+document.querySelector('#parkTypeDropdown').style.display = "none"
 
   // called locationDropdownContent function to display the categories on the locationdropdown as soon as pageloads
   locationDropdownContent();
 
-  // accessed the locationDropdown and store it to a variable for later use
+  // accessed the locationDropdown, formFoRadio and store it to a variable for later use
   let parkLocationDropdown = document.querySelector("#parkLocationDropdown");
+  let radioForm = document.querySelector('#formFoRadio')
+
+  // called radioForm variable and made it if the dropdown is clicked run showLocationDropDown function
+  radioForm.addEventListener('click', showLocationDropDown)
 
   // called parkLocationDropdown variable and made it if the dropdown changes run displayLocationDropdownContent function
   parkLocationDropdown.addEventListener("change",displayLocationDropdownContent);};
@@ -54,6 +60,7 @@ function displayLocationDropdownContent() {
     }
     return dropdownLocationValue === parkContent.State
 });
+
 // created a new variable with the selected array and used the map method so it changes the copy of selectedCategoryContents and returns a new array
 let specificContentInArray = selectedCategoryContents.map((specificContent) => {
     
@@ -103,7 +110,7 @@ let specificContentInArray = selectedCategoryContents.map((specificContent) => {
     displayTableData(tableBody, content);
     document.querySelector("#tableContent").style.display = "block";
   });
-  
+
 //  made a function that creates a row and also creates cells inside the rows with data within the table body 
   function displayTableData(tableBody, data) {
     // create a new row for table data to be stored in
@@ -113,6 +120,26 @@ let specificContentInArray = selectedCategoryContents.map((specificContent) => {
     for (let property in data) {
       let cells = newRow.insertCell();
       cells.innerHTML = data[property];
+    }
+  }
+}
+// created a function that hides and shows the dropdown list for parkLocationDropdown and parkTypeDropdown when radio button is checked
+function showLocationDropDown() {
+  let locationRadioBtn = document.querySelector("#locationRadioBtn");
+  let parkLocationDropdown = document.querySelector("#parkLocationDropdown");
+  let parkTypeDropdown = document.querySelector("#parkTypeDropdown");
+  let locationDropdown = document.querySelector("#parkLocationDropdown");
+// if one of the two radio buttons are checked then hide the other one, vice versa
+  if (locationRadioBtn.checked || parkTypeDropdown.checked) {
+    parkLocationDropdown.style.display = "inline";
+    parkTypeDropdown.style.display = "none";
+  } else {
+    parkLocationDropdown.style.display = "none";
+    parkTypeDropdown.style.display = "inline";
+    // made a condition if the type dropdown has a display of inline then hide the table and when you switch back the selected index for locationDropdown will reset at index0
+    if ((parkTypeDropdown.style.display = "inline")) {
+      document.querySelector("#tableContent").style.display = "none";
+      locationDropdown.selectedIndex = 0;
     }
   }
 }

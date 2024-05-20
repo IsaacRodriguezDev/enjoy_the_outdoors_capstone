@@ -54,8 +54,41 @@ function displayLocationDropdownContent() {
     }
     return dropdownLocationValue === parkContent.State
 });
-  // looping through the selectedCategoryContents array to display each objects data
-  selectedCategoryContents.forEach((content) => {
+// created a new variable with the selected array and used the map method so it changes the copy of selectedCategoryContents and returns a new array
+let specificContentInArray = selectedCategoryContents.map((specificContent) => {
+    // created an array with the only objects I want to display for the user
+    let specificContentArray = [specificContent.LocationID.toUpperCase(), specificContent.LocationName, specificContent.Address, specificContent.Phone, specificContent.Visit]
+    let notAvailable = 'N/A'
+    if(specificContent.Address === 0){
+        specificContentArray.splice(2,1,`${specificContent.City}, ${specificContent.State}: <b>This address could not be found</b>`)
+      }
+  if(specificContent.Phone === 0){
+    specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
+  }
+   if(specificContent.Fax === 0){
+    specificContentArray.splice(3,0,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${notAvailable}</div>`)
+  } 
+  if(typeof(specificContent.Fax) !== 'undefined' && typeof(specificContent.Phone) !== 'undefined'){
+    specificContentArray.splice(3,1,`<b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
+  }
+  if(typeof(specificContent.Fax) !== 'undefined' && specificContent.Phone === 0){
+    specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
+  }
+  if(specificContent.Phone === 0 && specificContent.Fax === 0){
+    specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${notAvailable}</div>`)
+  }
+
+  if(typeof(specificContent.Visit) === 'undefined'){
+    specificContentArray.pop()
+    specificContentArray.splice(4,1,`${notAvailable}`)
+  } 
+  if(typeof(specificContent.Visit) !== 'undefined'){
+    specificContentArray.splice(4,1,`<a href="${specificContent.Visit}">${specificContent.Visit}</a>`)
+  }
+     return specificContentArray 
+});
+  // looping through the specificContentInArray array to display each objects data
+  specificContentInArray.forEach((content) => {
     displayTableData(tableBody, content);
     document.querySelector("#tableContent").style.display = "block";
   });

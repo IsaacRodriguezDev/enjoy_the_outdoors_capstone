@@ -56,43 +56,55 @@ function displayLocationDropdownContent() {
 });
 // created a new variable with the selected array and used the map method so it changes the copy of selectedCategoryContents and returns a new array
 let specificContentInArray = selectedCategoryContents.map((specificContent) => {
+    
     // created an array with the only objects I want to display for the user
     let specificContentArray = [specificContent.LocationID.toUpperCase(), specificContent.LocationName, specificContent.Address, specificContent.Phone, specificContent.Visit]
     let notAvailable = 'N/A'
-    if(specificContent.Address === 0){
+
+    // made if conditions that check if the properties meet certain condition to display specific information to user
+    if(!specificContent.Address){
         specificContentArray.splice(2,1,`${specificContent.City}, ${specificContent.State}: <b>This address could not be found</b>`)
       }
-  if(specificContent.Phone === 0){
-    specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
-  }
-   if(specificContent.Fax === 0){
-    specificContentArray.splice(3,0,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${notAvailable}</div>`)
-  } 
-  if(typeof(specificContent.Fax) !== 'undefined' && typeof(specificContent.Phone) !== 'undefined'){
-    specificContentArray.splice(3,1,`<b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
-  }
-  if(typeof(specificContent.Fax) !== 'undefined' && specificContent.Phone === 0){
-    specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
-  }
-  if(specificContent.Phone === 0 && specificContent.Fax === 0){
-    specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${notAvailable}</div>`)
-  }
 
-  if(typeof(specificContent.Visit) === 'undefined'){
-    specificContentArray.pop()
+    //   check if there isn't a visit and then N/A if there is display it
+    if(!specificContent.Visit){
     specificContentArray.splice(4,1,`${notAvailable}`)
-  } 
-  if(typeof(specificContent.Visit) !== 'undefined'){
+  } else{
     specificContentArray.splice(4,1,`<a href="${specificContent.Visit}">${specificContent.Visit}</a>`)
   }
-     return specificContentArray 
+
+// check if there is a phone and fax then return
+    if(specificContent.Fax && specificContent.Phone){
+    specificContentArray.splice(3,1,`<b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
+    return specificContentArray
+     }
+
+// check if there is not a phone and fax then return
+    if(!specificContent.Phone && !specificContent.Fax){
+        specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${notAvailable}</div>`)
+        return specificContentArray
+      }
+
+// check if there isn't a phone but there is a fax then return
+    if(!specificContent.Phone){
+    specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
+    return specificContentArray
+  }
+
+// check if there isn't a fax but there is a phone then return
+   if(!specificContent.Fax){
+    specificContentArray.splice(3,1,`<b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${notAvailable}</div>`)
+    return specificContentArray
+  } 
 });
+
   // looping through the specificContentInArray array to display each objects data
   specificContentInArray.forEach((content) => {
     displayTableData(tableBody, content);
     document.querySelector("#tableContent").style.display = "block";
   });
-//   made a function that creates a row and also creates cells inside the rows with data within the table body 
+  
+//  made a function that creates a row and also creates cells inside the rows with data within the table body 
   function displayTableData(tableBody, data) {
     // create a new row for table data to be stored in
     let newRow = tableBody.insertRow(-1);

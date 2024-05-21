@@ -3,26 +3,23 @@
 window.onload = () => {
   // when page loads hide the table header, locationDropdown, and parkTypeDropdown
 document.querySelector("#tableContent").style.display = "none";
-document.querySelector('#parkLocationDropdown').style.display = "none";
-document.querySelector('#parkTypeDropdown').style.display = "none"
-
-  // called locationDropdownContent function to display the categories on the locationdropdown as soon as pageloads
-  locationDropdownContent();
+document.querySelector('#parkDropdown').style.display = "none";
 
   // accessed the locationDropdown, formFoRadio and store it to a variable for later use
-  let parkLocationDropdown = document.querySelector("#parkLocationDropdown");
-  let radioForm = document.querySelector('#formFoRadio')
+  let parkDropdown = document.querySelector("#parkDropdown");
+let locationRadioBtn = document.querySelector('#locationRadioBtn')
+let parkTypeRadioBtn = document.querySelector('#parkTypeRadioBtn')
 
   // called radioForm variable and made it if the dropdown is clicked run showLocationDropDown function
-  radioForm.addEventListener('click', showLocationDropDown)
+  locationRadioBtn.addEventListener('click', showLocationDropDown)
+  parkTypeRadioBtn.addEventListener('click', showLocationDropDown)
 
-  // called parkLocationDropdown variable and made it if the dropdown changes run displayLocationDropdownContent function
-  parkLocationDropdown.addEventListener("change",displayLocationDropdownContent);};
-
+  // called parkDropdown variable and made it if the dropdown changes run displayLocationDropdownContent function
+  parkDropdown.addEventListener("change",showLocationOrPartType) }
 // created a function called locationDropdownContent to add every content in the locationsArray into the dropdown for user to select
 function locationDropdownContent() {
   //   created a variable called defualtOption to display select a park location on the dropdown and appended it to the location dropdown
-  let locationDowndown = document.querySelector("#parkLocationDropdown");
+  let locationDowndown = document.querySelector("#parkDropdown");
   let defaultOption = document.createElement("option");
   defaultOption.textContent = "--Select a Park Location--";
   defaultOption.value = "";
@@ -37,79 +34,142 @@ function locationDropdownContent() {
   });
 }
 
-//  created displayLocationDropdownContent function to display data in a table when user selects a category
+// created a function called locationDropdownContent to add every content in the locationsArray into the dropdown for user to select
+function typeDropdownContent() {
+  //   created a variable called defualtOption to display select a park location on the dropdown and appended it to the location dropdown
+  let locationDowndown = document.querySelector("#parkDropdown");
+  let defaultOption = document.createElement("option");
+  defaultOption.textContent = "--Select a Park Type--";
+  defaultOption.value = "";
+  locationDowndown.appendChild(defaultOption);
+
+  //  used forEach to loop through locationsArray to display all locationArray as categories
+  parkTypesArray.forEach((location) => {
+    let stateOption = document.createElement("option");
+    stateOption.textContent = location;
+    stateOption.value = location;
+    locationDowndown.appendChild(stateOption);
+  });
+}
+
+//  created displayLocationDropdownContent, and displayParkTypeDropdownContent function to display data in a table when user selects a category
 function displayLocationDropdownContent() {
-  let locationDropdown = document.querySelector("#parkLocationDropdown");
+  let dropdown = document.querySelector("#parkDropdown");
   let tableBody = document.querySelector("#tableBody");
 
   //   if dropdown is index -1 hide table and else make the table empty string so it won't duplicate table data
-  let selectedDropdownIndex = locationDropdown.selectedIndex - 1;
+  let selectedDropdownIndex = dropdown.selectedIndex - 1;
   if (selectedDropdownIndex === -1) {
     document.querySelector("#tableContent").style.display = "none";
   } else {
     tableBody.textContent = "";
   }
- 
   // create a variable that gives me the value of chosen the chosen category
-  let dropdownLocationValue = locationDropdown.value;
-
-  // created a variable called selectedCategoryContents that creates a new array of all objects of the selected category by returning those that meet the condition and if the locationDropdown value is not in the array hide table
+  let dropdownLocationValue = dropdown.value;
+ 
+  // created a variable called selectedCategoryContents that creates a new array of all objects of the selected category by returning those that meet the condition and if the dropdown value is not in the array hide table
   let selectedCategoryContents = nationalParksArray.filter((parkContent) => {
-    if( parkContent.State.indexOf(locationDropdown.value) === -1){
+    if( parkContent.State.indexOf(dropdown.value) === -1){
         document.querySelector("#tableContent").style.display = "none";
     }
     return dropdownLocationValue === parkContent.State
 });
-
-// created a new variable with the selected array and used the map method so it changes the copy of selectedCategoryContents and returns a new array
-let specificContentInArray = selectedCategoryContents.map((specificContent) => {
-    
-    // created an array with the only objects I want to display for the user
-    let specificContentArray = [specificContent.LocationID.toUpperCase(), specificContent.LocationName, specificContent.Address, specificContent.Phone, specificContent.Visit]
-    let notAvailable = 'N/A'
-
-    // made if conditions that check if the properties meet certain condition to display specific information to user
-    if(!specificContent.Address){
-        specificContentArray.splice(2,1,`${specificContent.City}, ${specificContent.State}: <b>This address could not be found</b>`)
-      }
-
-    //   check if there isn't a visit and then N/A if there is display it
-    if(!specificContent.Visit){
-    specificContentArray.splice(4,1,`${notAvailable}`)
-  } else{
-    specificContentArray.splice(4,1,`<a href="${specificContent.Visit}">${specificContent.Visit}</a>`)
+conditionsForDisplayData(selectedCategoryContents)
+}
+function displayParkTypeDropdownContent() {
+  let dropdown = document.querySelector("#parkDropdown");
+  let tableBody = document.querySelector("#tableBody");
+  //   if dropdown is index -1 hide table and else make the table empty string so it won't duplicate table data
+  let selectedDropdownIndex = dropdown.selectedIndex - 1;
+  if (selectedDropdownIndex === -1) {
+    document.querySelector("#tableContent").style.display = "none";
+  } else {
+    tableBody.textContent = "";
   }
+
+  // create a variable that gives me the value of chosen the chosen category
+  let dropdownParkTypeValue = dropdown.value;
+
+// created a variable called selectedParkContents that creates a new array of all objects of the selected category and returning what is only found of that category
+let selectedParkContents = nationalParksArray.filter((parkType)=>{
+  let parkSearch = parkType.LocationName.indexOf(dropdownParkTypeValue)
+  if(parkSearch !== -1){
+    console.log()
+    return parkType.LocationName.substring(parkSearch)
+  }
+})
+conditionsForDisplayData(selectedParkContents)
+}
+
+// created a function that hides and shows the dropdown list for parkDropdown and parkTypeDropdown when radio button is checked
+function showLocationDropDown() {
+   let parkTypeRadioBtn = document.querySelector('#parkTypeRadioBtn')
+  let locationRadioBtn = document.querySelector('#locationRadioBtn')
+  let parkDropdown = document.querySelector('#parkDropdown')
+  parkDropdown.style.display = "inline";
+  parkDropdown.length = 0
+// if one of the two radio buttons are checked then hide the other one, vice versa
+if(locationRadioBtn.checked){
+  document.querySelector("#tableContent").style.display = "none";
+  locationDropdownContent();
+}
+if(parkTypeRadioBtn.checked){
+  document.querySelector("#tableContent").style.display = "none";
+  typeDropdownContent()
+}
+
+}
+// made a function for all the if conditions that are supposed to be displayed
+function conditionsForDisplayData(array){
+  // created a new variable with the selected array and used the map method so it changes the copy of array parameter and returns a new array
+let specificContentInArrayOfPark = array.map((specificContent) => {
+    
+  // created an array with the only objects I want to display for the user
+  let specificContentArray = [specificContent.LocationID.toUpperCase(), specificContent.LocationName, specificContent.Address, specificContent.Phone, specificContent.Visit]
+  let notAvailable = 'N/A'
+
+  // made if conditions that check if the properties meet certain condition to display specific information to user
+  if(!specificContent.Address){
+      specificContentArray.splice(2,1,`${specificContent.City}, ${specificContent.State}: <b>This address could not be found</b>`)
+    }
+
+  //   check if there isn't a visit and then N/A if there is display it
+  if(!specificContent.Visit){
+  specificContentArray.splice(4,1,`${notAvailable}`)
+} else{
+  specificContentArray.splice(4,1,`<a href="${specificContent.Visit}">${specificContent.Visit}</a>`)
+}
 
 // check if there is a phone and fax then return
-    if(specificContent.Fax && specificContent.Phone){
-    specificContentArray.splice(3,1,`<b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
-    return specificContentArray
-     }
+  if(specificContent.Fax && specificContent.Phone){
+  specificContentArray.splice(3,1,`<b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
+  return specificContentArray
+   }
 
 // check if there is not a phone and fax then return
-    if(!specificContent.Phone && !specificContent.Fax){
-        specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${notAvailable}</div>`)
-        return specificContentArray
-      }
+  if(!specificContent.Phone && !specificContent.Fax){
+      specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${notAvailable}</div>`)
+      return specificContentArray
+    }
 
 // check if there isn't a phone but there is a fax then return
-    if(!specificContent.Phone){
-    specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
-    return specificContentArray
-  }
+  if(!specificContent.Phone){
+  specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
+  return specificContentArray
+}
 
 // check if there isn't a fax but there is a phone then return
-   if(!specificContent.Fax){
-    specificContentArray.splice(3,1,`<b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${notAvailable}</div>`)
-    return specificContentArray
-  } 
+ if(!specificContent.Fax){
+  specificContentArray.splice(3,1,`<b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${notAvailable}</div>`)
+  return specificContentArray
+} 
 });
 
   // looping through the specificContentInArray array to display each objects data
-  specificContentInArray.forEach((content) => {
-    displayTableData(tableBody, content);
+  specificContentInArrayOfPark.forEach((content)=>{
+    displayTableData(tableBody,content)
     document.querySelector("#tableContent").style.display = "block";
-  });
+  })
 
 //  made a function that creates a row and also creates cells inside the rows with data within the table body 
   function displayTableData(tableBody, data) {
@@ -123,23 +183,14 @@ let specificContentInArray = selectedCategoryContents.map((specificContent) => {
     }
   }
 }
-// created a function that hides and shows the dropdown list for parkLocationDropdown and parkTypeDropdown when radio button is checked
-function showLocationDropDown() {
-  let locationRadioBtn = document.querySelector("#locationRadioBtn");
-  let parkLocationDropdown = document.querySelector("#parkLocationDropdown");
-  let parkTypeDropdown = document.querySelector("#parkTypeDropdown");
-  let locationDropdown = document.querySelector("#parkLocationDropdown");
-// if one of the two radio buttons are checked then hide the other one, vice versa
-  if (locationRadioBtn.checked || parkTypeDropdown.checked) {
-    parkLocationDropdown.style.display = "inline";
-    parkTypeDropdown.style.display = "none";
-  } else {
-    parkLocationDropdown.style.display = "none";
-    parkTypeDropdown.style.display = "inline";
-    // made a condition if the type dropdown has a display of inline then hide the table and when you switch back the selected index for locationDropdown will reset at index0
-    if ((parkTypeDropdown.style.display = "inline")) {
-      document.querySelector("#tableContent").style.display = "none";
-      locationDropdown.selectedIndex = 0;
-    }
+// created a function to show the content depending on which radio btn is checked 
+function showLocationOrPartType(){
+  let parkTypeRadioBtn = document.querySelector('#parkTypeRadioBtn')
+  let locationRadioBtn = document.querySelector('#locationRadioBtn')
+  if(locationRadioBtn.checked){
+    displayLocationDropdownContent()
+  }
+  if(parkTypeRadioBtn.checked){
+    displayParkTypeDropdownContent()
   }
 }

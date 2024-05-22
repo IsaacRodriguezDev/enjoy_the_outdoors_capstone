@@ -5,14 +5,14 @@ window.onload = () => {
 document.querySelector("#tableContent").style.display = "none";
 document.querySelector('#parkDropdown').style.display = "none";
 
-  // accessed the locationDropdown, formFoRadio and store it to a variable for later use
-  let parkDropdown = document.querySelector("#parkDropdown");
+  // accessed the locationDropdown, locationRadioBtn, parkTypeRadioBtn and store it to a variable for later use
+let parkDropdown = document.querySelector("#parkDropdown");
 let locationRadioBtn = document.querySelector('#locationRadioBtn')
 let parkTypeRadioBtn = document.querySelector('#parkTypeRadioBtn')
 
-  // called radioForm variable and made it if the dropdown is clicked run showLocationDropDown function
-  locationRadioBtn.addEventListener('click', showLocationDropDown)
-  parkTypeRadioBtn.addEventListener('click', showLocationDropDown)
+  // called locationRadioBtn, and parkTypeRadioBtn variables and made it if the dropdown is clicked run showDropDown function
+  locationRadioBtn.addEventListener('click', showDropDown)
+  parkTypeRadioBtn.addEventListener('click', showDropDown)
 
   // called parkDropdown variable and made it if the dropdown changes run displayLocationDropdownContent function
   parkDropdown.addEventListener("change",showLocationOrPartType) }
@@ -102,7 +102,7 @@ conditionsForDisplayData(selectedParkContents)
 }
 
 // created a function that hides and shows the dropdown list for parkDropdown and parkTypeDropdown when radio button is checked
-function showLocationDropDown() {
+function showDropDown() {
    let parkTypeRadioBtn = document.querySelector('#parkTypeRadioBtn')
   let locationRadioBtn = document.querySelector('#locationRadioBtn')
   let parkDropdown = document.querySelector('#parkDropdown')

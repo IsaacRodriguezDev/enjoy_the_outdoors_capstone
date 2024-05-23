@@ -34,13 +34,12 @@
 
   <!-- created a form for the radion buttons -->
   <div class="d-flex justify-content-center">
-    <div>
+    <div class="px-2">
       <label for="radioBtns"> <b>Search By:</b> </label>
     </div>
-<div>
+<div class="px-2">
   <input type="radio" name="radioBtns" id="locationRadioBtn">
   <label for="locationRadioBtn">Location</label>
-  
 </div>
 <div>
   <input type="radio" name="radioBtns" id="parkTypeRadioBtn">
@@ -56,7 +55,7 @@
 </div>
 <hr>
   <!-- creating a table to display data of selected category -->
-  <table id="tableContent" class=" w-75 mx-auto table table-striped table-bordered table-dark">
+  <table id="tableContent" class="w-75 mx-auto table table-striped table-bordered table-dark">
     <thead>
       <th>Location ID</th>
       <th>Name</th>
@@ -68,6 +67,7 @@
 
     </tbody>
   </table>
+  <h3 id="selectPark" class="text-center">Search for National Parks to view results</h3>
 </div>
 
 

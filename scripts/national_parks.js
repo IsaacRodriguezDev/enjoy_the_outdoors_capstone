@@ -2,13 +2,13 @@
 
 window.onload = () => {
   // when page loads hide the table header, locationDropdown, and parkTypeDropdown
-document.querySelector("#tableContent").style.display = "none";
-document.querySelector('#parkDropdown').style.display = "none";
+  document.querySelector("#tableContent").style.display = "none";
+  document.querySelector('#parkDropdown').style.display = "none";
 
   // accessed the locationDropdown, locationRadioBtn, parkTypeRadioBtn and store it to a variable for later use
-let parkDropdown = document.querySelector("#parkDropdown");
-let locationRadioBtn = document.querySelector('#locationRadioBtn')
-let parkTypeRadioBtn = document.querySelector('#parkTypeRadioBtn')
+  let parkDropdown = document.querySelector("#parkDropdown");
+  let locationRadioBtn = document.querySelector('#locationRadioBtn')
+  let parkTypeRadioBtn = document.querySelector('#parkTypeRadioBtn')
 
   // called locationRadioBtn, and parkTypeRadioBtn variables and made it if the dropdown is clicked run showDropDown function
   locationRadioBtn.addEventListener('click', showDropDown)
@@ -142,25 +142,25 @@ let specificContentInArrayOfPark = array.map((specificContent) => {
 
 // check if there is a phone and fax then return
   if(specificContent.Fax && specificContent.Phone){
-  specificContentArray.splice(3,1,`<b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
+  specificContentArray.splice(3,1,`<div class='text-nowrap'> <b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${specificContent.Fax}</div></div>`)
   return specificContentArray
    }
 
 // check if there is not a phone and fax then return
   if(!specificContent.Phone && !specificContent.Fax){
-      specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${notAvailable}</div>`)
+      specificContentArray.splice(3,1,`<div class='text-nowrap'> <b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${notAvailable}</div></div>`)
       return specificContentArray
     }
 
 // check if there isn't a phone but there is a fax then return
   if(!specificContent.Phone){
-  specificContentArray.splice(3,1,`<b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${specificContent.Fax}</div>`)
+  specificContentArray.splice(3,1,`<div class='text-nowrap'><b>Phone:</b> ${notAvailable} <div><b>Fax:</b> ${specificContent.Fax}</div></div>`)
   return specificContentArray
 }
 
 // check if there isn't a fax but there is a phone then return
  if(!specificContent.Fax){
-  specificContentArray.splice(3,1,`<b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${notAvailable}</div>`)
+  specificContentArray.splice(3,1,`<div class='text-nowrap'><b>Phone:</b> ${specificContent.Phone} <div><b>Fax:</b> ${notAvailable}</div></div>`)
   return specificContentArray
 } 
 });
@@ -175,7 +175,7 @@ let specificContentInArrayOfPark = array.map((specificContent) => {
   function displayTableData(tableBody, data) {
     // create a new row for table data to be stored in
     let newRow = tableBody.insertRow(-1);
-
+   
     // making a loop that creates a cell for each property that we declare
     for (let property in data) {
       let cells = newRow.insertCell();

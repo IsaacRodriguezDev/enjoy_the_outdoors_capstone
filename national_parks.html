@@ -33,21 +33,30 @@
  <section>
 
   <!-- created a form for the radion buttons -->
-  
-<label for="radioBtns"> <b>Search By:</b> </label>
-
-<input type="radio" name="radioBtns" id="locationRadioBtn">
-<label for="locationRadioBtn">Location</label>
-
-<input type="radio" name="radioBtns" id="parkTypeRadioBtn">
-<label for="parkTypeRadioBtn">Type</label>
-  
+  <div class="d-flex justify-content-center">
+    <div>
+      <label for="radioBtns"> <b>Search By:</b> </label>
+    </div>
 <div>
-  <!-- created a dropdown for contet -->
-  <select name="parkDropdown" id="parkDropdown"></select>
+  <input type="radio" name="radioBtns" id="locationRadioBtn">
+  <label for="locationRadioBtn">Location</label>
+  
+</div>
+<div>
+  <input type="radio" name="radioBtns" id="parkTypeRadioBtn">
+  <label for="parkTypeRadioBtn">Type</label>
+</div>
 
+</div>
+<div class="container">
+  <!-- created a dropdown for content -->
+  <div class="d-flex justify-content-center align-items-center" >
+  <select name="parkDropdown" id="parkDropdown"class=" w-25 form-select"></select>
+  
+</div>
+<hr>
   <!-- creating a table to display data of selected category -->
-  <table id="tableContent" class="table table-striped">
+  <table id="tableContent" class=" w-75 mx-auto table table-striped table-bordered table-dark">
     <thead>
       <th>Location ID</th>
       <th>Name</th>
@@ -55,7 +64,7 @@
       <th>Phone</th>
       <th>URL</th>
     </thead>
-    <tbody id="tableBody">
+    <tbody id="tableBody" >
 
     </tbody>
   </table>

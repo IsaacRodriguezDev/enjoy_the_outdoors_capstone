@@ -4,7 +4,7 @@ window.onload = () => {
   // when page loads hide the table header, locationDropdown, and parkTypeDropdown
   document.querySelector("#tableContent").style.display = "none";
   document.querySelector('#parkDropdown').style.display = "none";
-
+  
   // accessed the locationDropdown, locationRadioBtn, parkTypeRadioBtn and store it to a variable for later use
   let parkDropdown = document.querySelector("#parkDropdown");
   let locationRadioBtn = document.querySelector('#locationRadioBtn')
@@ -79,10 +79,12 @@ conditionsForDisplayData(selectedCategoryContents)
 function displayParkTypeDropdownContent() {
   let dropdown = document.querySelector("#parkDropdown");
   let tableBody = document.querySelector("#tableBody");
+  
   //   if dropdown is index -1 hide table and else make the table empty string so it won't duplicate table data
   let selectedDropdownIndex = dropdown.selectedIndex - 1;
+  console.log(selectedDropdownIndex)
   if (selectedDropdownIndex === -1) {
-    document.querySelector("#tableContent").style.display = "none";
+    document.querySelector("#tableContent").style.display = "none"
   } else {
     tableBody.textContent = "";
   }
@@ -92,10 +94,11 @@ function displayParkTypeDropdownContent() {
 
 // created a variable called selectedParkContents that creates a new array of all objects of the selected category and returning what is only found of that category
 let selectedParkContents = nationalParksArray.filter((parkType)=>{
-  let parkSearch = parkType.LocationName.indexOf(dropdownParkTypeValue)
+ let parkSearch = parkType.LocationName.indexOf(dropdownParkTypeValue)
+  console.log(parkSearch)
   if(parkSearch !== -1){
-    console.log()
-    return parkType.LocationName.substring(parkSearch)
+    console.log(`This is THIS NAME :${parkType.LocationName.substring(parkSearch)}`)
+     return parkType.LocationName.substring(parkSearch)
   }
 })
 conditionsForDisplayData(selectedParkContents)
@@ -110,17 +113,19 @@ function showDropDown() {
   parkDropdown.length = 0
 // if one of the two radio buttons are checked then hide the other one, vice versa
 if(locationRadioBtn.checked){
+  document.querySelector("#selectPark").style.display = "block";
   document.querySelector("#tableContent").style.display = "none";
   locationDropdownContent();
 }
 if(parkTypeRadioBtn.checked){
+  document.querySelector("#selectPark").style.display = "block";
   document.querySelector("#tableContent").style.display = "none";
   typeDropdownContent()
 }
-
 }
 // made a function for all the if conditions that are supposed to be displayed
 function conditionsForDisplayData(array){
+  let tableBody = document.querySelector('#tableBody')
   // created a new variable with the selected array and used the map method so it changes the copy of array parameter and returns a new array
 let specificContentInArrayOfPark = array.map((specificContent) => {
     
@@ -180,6 +185,7 @@ let specificContentInArrayOfPark = array.map((specificContent) => {
     for (let property in data) {
       let cells = newRow.insertCell();
       cells.innerHTML = data[property];
+
     }
   }
 }
@@ -187,10 +193,12 @@ let specificContentInArrayOfPark = array.map((specificContent) => {
 function showLocationOrPartType(){
   let parkTypeRadioBtn = document.querySelector('#parkTypeRadioBtn')
   let locationRadioBtn = document.querySelector('#locationRadioBtn')
+
   if(locationRadioBtn.checked){
     displayLocationDropdownContent()
-  }
-  if(parkTypeRadioBtn.checked){
+  document.querySelector("#selectPark").style.display = "none";
+  }else if(parkTypeRadioBtn.checked){
     displayParkTypeDropdownContent()
+    document.querySelector("#selectPark").style.display = "none";
   }
 }

@@ -1,0 +1,22 @@
+.small-carousel {
+    height: 63vh;
+    
+  }
+
+  .small-carousel .carousel-inner {
+    height: 100%;
+  }
+
+  .small-carousel .carousel-item {
+    height: 100%;
+  }
+
+  .small-carousel .carousel-item img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+  .container{
+    padding-left: 300px;
+  }
+ 
